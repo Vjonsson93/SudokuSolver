@@ -1,0 +1,10 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\Viktor Jonsson\\CodingProjects\\lib\\Commons-lang3\\commons-lang3-3.11.jar",
+        "c:\\Users\\Viktor Jonsson\\CodingProjects\\lib\\Commons-lang3\\commons-lang3-3.11-javadoc.jar",
+        "c:\\Users\\Viktor Jonsson\\CodingProjects\\lib\\Commons-lang3\\commons-lang3-3.11-sources.jar",
+        "c:\\Users\\Viktor Jonsson\\CodingProjects\\lib\\Commons-lang3\\commons-lang3-3.11-tests.jar",
+        "c:\\Users\\Viktor Jonsson\\CodingProjects\\lib\\Commons-lang3\\commons-lang3-3.11-test-sources.jar"
+    ]
+}
