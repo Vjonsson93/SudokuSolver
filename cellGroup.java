@@ -1,7 +1,6 @@
 import java.util.BitSet;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+
 
 abstract class cellGroup {
     cell[] cells = new cell[9];
@@ -9,24 +8,6 @@ abstract class cellGroup {
     int index;
 
     int numberOfCellsInGroup = 0;
-
-    @Override
-    public String toString()
-    {
-    return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-    .append("index", index + 1)
-    .append("Cell1", cells[0])
-    .append("Cell2", cells[1])
-    .append("Cell3", cells[2])
-    .append("Cell4", cells[3])
-    .append("Cell5", cells[4])
-    .append("Cell6", cells[5])
-    .append("Cell7", cells[6])
-    .append("Cell8", cells[7])
-    .append("Cell9", cells[8])
-    .append("Available Num", availableNumbers)
-    .toString();
-    }
 
 
     public void addCellInGroup(cell cell) {

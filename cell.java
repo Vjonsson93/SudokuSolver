@@ -1,7 +1,5 @@
 import java.util.BitSet;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class cell {
 
@@ -41,20 +39,6 @@ public class cell {
             solved = false;
         };
         
-    }
-
-    @Override
-    public String toString()
-    {
-    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-    .append("index", index + 1)
-    .append("Row", rowIndex + 1)
-    .append("Column", columnIndex + 1)
-    .append("Box", boxIndex + 1)
-    .append("Number", number)
-    .append("Available Num", availableNumbers)
-    .append("Solved", solved)
-    .toString();
     }
 
 
