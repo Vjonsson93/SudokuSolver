@@ -43,16 +43,11 @@ abstract class cellGroup {
 
     //Looks at a Cell Group and tries to find a cell that is the only one that has a specific number available to it
     public void lookForOnlyAvailableCellForNumber (){
-
- 
         BitSet combined = new BitSet(9);
-        BitSet temp = new BitSet(9);
         for (cell cell : cells) {
             if(cell.solved == false){
                 
-
                 combined.clear();
-                temp.clear();
                 for (cell cell2 : cells){
                     
                     if(cell2 != cell){
@@ -63,89 +58,52 @@ abstract class cellGroup {
                 combined.flip(0,9);
                 combined.and(cell.availableNumbers);
 
-
-
-                if( combined.cardinality() == 1){
-                    System.out.println("NewGroup for Cell Index: " + (cell.index + 1));
-                    System.out.println("Group Available Num: " + cell.row.availableNumbers + cell.column.availableNumbers + cell.box.availableNumbers);
-                    System.out.println(this.toString());
-                    cell.availableNumbers = combined;
-                    cell.checkIfSolved();
-                    System.out.println(this.toString());
-                    System.out.println("Group Available Num: " + cell.row.availableNumbers + cell.column.availableNumbers + cell.box.availableNumbers);
-                    System.out.println("");
-                    
+                if( combined.cardinality() == 1 && cell.solved == false){
+                    cell.availableNumbers = (BitSet) combined.clone();
+                    cell.checkIfSolved();                 
                 }
-
-
-
             }
 
         }
     }
+    
+    public void findPairs () {
+        BitSet pair = new BitSet (9);
+        BitSet allOthers = new BitSet(9);
 
-    //Looks for 2 cells that only have two of the same numbers available to them and removes those two numbers from all other available cells.
-    public void simplifyWithPairs(){
+        
+        for (cell cell : cells){
+            if ( cell.solved == false){
+                
+                pair.clear();
+                allOthers.clear();
+                pair = (BitSet) cell.availableNumbers.clone();
+                for (cell cell2 : cells){
+                    if (cell2 != cell){
+                        pair.and(cell2.availableNumbers);
 
-        cell[] pairedCells = this.checkForPairs();
-        for(cell element : pairedCells){
-            for(cell comparedCell: pairedCells){
-                if(element != null && comparedCell != null){
-                    if(element.availableNumbers.equals(comparedCell.availableNumbers)){
+                        if(pair.cardinality() == 2) {
+                        
+                            for(cell cell3 :cells){
+                                if(cell3 != cell && cell3 != cell2){
+                                    allOthers.and(cell3.availableNumbers);
+                                }
+                            }
+                            allOthers.flip(0, 9);
+                            allOthers.and(pair);
 
-                        simplifySharedCellGroup(element, comparedCell);
-                        //System.out.println("Pair Simplification Triggered");
+                            if(allOthers == pair){
 
+                                cell.availableNumbers = (BitSet) pair.clone();
+                                cell2.availableNumbers = (BitSet) pair.clone();
+                                cell.pairedWith(cell2);
+                            }
+                        }
                     }
                 }
             }
-
         }
     }
-
-    private void simplifySharedCellGroup(cell element, cell comparedCell) {
-        int firstIndex = element.availableNumbers.nextSetBit(0);
-        int secondIndex = element.availableNumbers.nextSetBit(firstIndex+1);
-        if(element.box == comparedCell.box) {
-            element.box.removeTwoAvailableNumberFromAllCellsExcludingTwoGiven(element, comparedCell, firstIndex,
-                    secondIndex);
-        }
-        if (element.row == comparedCell.row) {
-            element.row.removeTwoAvailableNumberFromAllCellsExcludingTwoGiven(element, comparedCell, firstIndex,
-                    secondIndex);
-        }
-        if (element.column == comparedCell.column) {
-            element.column.removeTwoAvailableNumberFromAllCellsExcludingTwoGiven(element, comparedCell, firstIndex,
-                    secondIndex);
-        }
-
-    }
-
-    protected void removeTwoAvailableNumberFromAllCellsExcludingTwoGiven(cell element, cell comparedCell,
-            int firstIndex, int secondIndex) {
-        for(cell toBeSimplified: cells) {
-            if(toBeSimplified != element && toBeSimplified != comparedCell && toBeSimplified.solved == false){
-
-                if(firstIndex > 0 && secondIndex > 0){
-                    toBeSimplified.removeAvailableNumber(firstIndex);
-                    toBeSimplified.removeAvailableNumber(secondIndex);
-                }
-            }
-            
-        }
-    }
-
-    public cell[] checkForPairs(){
-
-        cell[] returnArray = new cell[9];
-        int count = 0;
-        for(cell element: cells){
-            if (element.availableNumbers.cardinality() == 2 && element.solved == false){
-                returnArray[count] = element;
-                count++;
-            }
-        }
-        return returnArray;
-    }
-
 }
+
+

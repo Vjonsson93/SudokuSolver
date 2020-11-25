@@ -3,7 +3,7 @@ public class mainSolver {
     static column[] columns = new column[9];
     static box[] boxes = new box[9];
     static cell[] cells = new cell[81];
-    static String inputString = "000003060080050700015080040800300009349006000206090370000400506700008002090000430";
+    static String inputString = "000000043007530290200070000000040000043706010002890000700000500019000300000204000";
     static boolean sudokuSolved = false;
     static int loopCount = 0;
     static String outputString = "";
@@ -71,11 +71,11 @@ public class mainSolver {
         }
 
         //main loop
-        while(sudokuSolved == false && loopCount < 5){
+        while(sudokuSolved == false && loopCount < 100){
             for (cell element : cells){
                 if(element.solved == false){
-                element.reduceAvailableNumberDueToCellGroup();
-                element.checkIfSolved();
+                    element.reduceAvailableNumberDueToCellGroup();
+                    element.checkIfSolved();
                 }
                 
             }
@@ -84,30 +84,18 @@ public class mainSolver {
                 rows[i].lookForOnlyAvailableCellForNumber();
                 boxes[i].lookForOnlyAvailableCellForNumber();
             }
-            //CELL INDEX 12 IS BEHAVING WEIRD!!!! AVAILABLE NUMBERS DISAPPEARS AFTER IT HAS BEEN SOLVED???
+            for (int i = 0; i < 9; i++){
+                columns[i].findPairs();
+                rows[i].findPairs();
+                boxes[i].findPairs();
+            }
 
-            
-            // for (int i = 0; i < 9; i++){
-            //     columns[i].simplifyWithPairs();
-            //     rows[i].simplifyWithPairs();
-            //     boxes[i].simplifyWithPairs();
-            // }
             checkIfPuzzleSolved();
             
             
             loopCount++;
             
         }
-        // for (cellGroup cellGroup : rows) {
-        //     System.out.println(cellGroup.toString());                
-        // }
-        // for (cellGroup cellGroup : columns) {
-        //     System.out.println(cellGroup.toString());                
-        // }
-        // for (cellGroup cellGroup : boxes) {
-        //     System.out.println(cellGroup.toString());                
-        // }
-
 
         for (cell element : cells){
             String temp = Integer.toString(element.number);

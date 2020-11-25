@@ -83,11 +83,40 @@ public class cell {
     }
     //Checks cell groups to make sure this cell doesn't have any numbers available that aren't available in the cell group
     public void reduceAvailableNumberDueToCellGroup(){
-        this.availableNumbers.and(this.row.availableNumbers);
-        this.availableNumbers.and(this.column.availableNumbers);
-        this.availableNumbers.and(this.box.availableNumbers);
+        if(this.row.availableNumbers.cardinality() != 0){
+            this.availableNumbers.and(this.row.availableNumbers);
+        }
+        if(this.row.availableNumbers.cardinality() != 0){
+        this.availableNumbers.and(this.column.availableNumbers);}
+        if(this.row.availableNumbers.cardinality() != 0){
+        this.availableNumbers.and(this.box.availableNumbers);}
     }
     public void updateNumOfAvailableNumbers() {
         numOfAvailableNumbers = this.availableNumbers.cardinality();
     }
+    public void pairedWith(cell cell) {
+        if(this.row == cell.row){
+            for(cell cells : this.row.cells){
+                if(cells != this && cells != cell){
+                    cells.availableNumbers.andNot(this.availableNumbers);
+                }
+            }
+        }
+        if(this.column == cell.column){
+            for(cell cells : this.column.cells){
+                if(cells != this && cells != cell){
+                    cells.availableNumbers.andNot(this.availableNumbers);
+                }
+            }
+        }
+        if(this.box == cell.box){
+            for(cell cells : this.box.cells){
+                if(cells != this && cells != cell){
+                    cells.availableNumbers.andNot(this.availableNumbers);
+                }
+            }
+        }
+    }
+
 }
+
